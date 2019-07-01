@@ -3,6 +3,8 @@ const cartIncrementButton = document.getElementById('cartIncrement')
 const cartDecrementButton = document.getElementById('cartDecrement')
 const countElement = document.getElementById('count')
 const buyButton = document.getElementById('purchase')
+const thankYouMessage = document.getElementById('thankYouMessage')
+thankYouMessage.style.opacity = 0;
 
 function init() {
   
@@ -22,18 +24,20 @@ function init() {
 
 buyButton.addEventListener('click', () => {
   const request = new PaymentRequest(buildSupportedPaymentMethodData(), buildShoppingCartDetails());
-  request.show().then(function(paymentResponse) {
-    
-    // Here we would process the payment. For this demo, simulate immediate success:
-    paymentResponse.complete('success')
-    .then(function() {
-      // For demo purposes:
-      introPanel.style.display = 'none';
-      successPanel.style.display = 'block';
-    });
+  request.canMakePayment().then(result => {
+
+    if (result) {
+
+      request.show().then(paymentResponse => {
+        console.log(paymentResponse.details)
+        // Here we would process the payment. For this demo, simulate immediate success:
+        paymentResponse.complete('success')
+          .then(() => thankYouMessage.style.opacity = 1)
+      })
+    }
   })
-  
 })
+
 function buildSupportedPaymentMethodData() {
   // Example supported payment methods:
   return [{
@@ -46,9 +50,8 @@ function buildSupportedPaymentMethodData() {
 }
 
 function buildShoppingCartDetails() {
-  // Hardcoded for demo purposes:
   return {
-    id: 'order-123',
+    id: 'count-order',
     displayItems: [
       {
         label: 'Example item',
@@ -57,10 +60,9 @@ function buildShoppingCartDetails() {
     ],
     total: {
       label: 'Total',
-      amount: {currency: 'USD', value: count.toString() }
+      amount: {currency: 'USD', value: count }
     }
   };
 }
-
 
 init()
