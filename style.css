@@ -1,0 +1,28 @@
+body,
+html {
+  margin: 100px 0;
+  text-align: center;
+  height: 100%;
+}
+
+button {
+  font-size: 28px;
+  border: none;
+}
+
+#count {
+  margin: 20px;
+  font-size: 28px;
+}
+
+#purchase {
+  display: inline-block;
+  padding: 7px 60px;
+  position: relative;
+  background-color: rgb(41, 127, 184);
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
